@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Toast } from 'antd-mobile' //偷个懒，你也可以自己写个轻提示
+import { Toast } from 'antd-mobile'
 
 import hhf from './hhf'
 // 拦截请求
@@ -65,11 +65,15 @@ axios.interceptors.response.use(function (res) {
   return undefined
 }
 return undefined
+}, error => {
+  console.log(error)
+  Toast.offline('网络连接失败！', 1)
+  // return Promise.resolve(error.response)
 })
 const resIF = {
   baseURL: 'http://localhost:9093',
   pathNAME: '/user/',
-  ...hhf // 防止项目冲突每个接口模块分开
+  ...hhf
 }
 const $http = {
   post (baseURL, url, data, type = 0) {
@@ -84,8 +88,6 @@ const $http = {
         // 'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
-    }).catch(err => {
-      Toast.offline('网络连接失败！', 1)
     })
   },
   get (baseURL, url, params, type = 0) {
@@ -99,8 +101,6 @@ const $http = {
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
-    }).catch(err => {
-      Toast.offline('网络连接失败！', 1)
     })
   }
 }
